@@ -1,0 +1,50 @@
+/* ==========================================================================
+   Split Buddy · 设计令牌
+   深色玻璃拟态：#0b1020 底 + blur 面板 + 细边框；主渐变 emerald→sky
+   同时把令牌映射进 Element Plus 变量（html.dark 暗色主题，见 index.html）
+   ========================================================================== */
+:root {
+  --bg: #0b1020;
+  --panel: rgba(255, 255, 255, 0.045);
+  --panel-strong: rgba(255, 255, 255, 0.07);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --text: #e6ebf5;
+  --text-dim: #9aa7bd;
+  --text-faint: #66738c;
+  --grad-a: #34d399;
+  --grad-b: #38bdf8;
+  --grad: linear-gradient(135deg, #34d399, #38bdf8);
+  --danger: #f87171;
+  --warn: #fbbf24;
+  --radius: 12px;
+  --ease: cubic-bezier(.22, .8, .36, 1);
+
+  /* ---- Element Plus 暗色变量覆写：让 EP 组件长在自家设计语言上 ---- */
+  --el-color-primary: #34d399;
+  --el-color-danger: #f87171;
+  --el-color-warning: #fbbf24;
+  --el-bg-color: transparent;
+  --el-bg-color-overlay: rgba(19, 26, 46, 0.96);
+  --el-text-color-primary: var(--text);
+  --el-text-color-regular: var(--text-dim);
+  --el-border-color: var(--line);
+  --el-border-color-light: var(--line);
+  --el-border-color-hover: var(--line-strong);
+  --el-fill-color-blank: rgba(255, 255, 255, .05);
+  --el-fill-color-light: rgba(255, 255, 255, .06);
+  --el-border-radius-base: 9px;
+  --el-font-size-base: 13.5px;
+  --el-box-shadow-light: 0 16px 40px -14px rgba(0, 0, 0, .7);
+}
+
+html.dark {
+  color-scheme: dark;
+  /* element-plus 暗色 css-vars 已随主题引入，这里仅保证与自家令牌一致 */
+  --el-bg-color: transparent;
+  --el-bg-color-overlay: rgba(19, 26, 46, 0.96);
+  --el-text-color-primary: var(--text);
+  --el-text-color-regular: var(--text-dim);
+  --el-border-color: var(--line);
+  --el-fill-color-blank: rgba(255, 255, 255, .05);
+}

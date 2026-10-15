@@ -1,0 +1,50 @@
+# split-buddy 主配置。敏感值（库密码/JWT 密钥）本地开发先写明文，
+# 上线前用环境变量覆盖（Spring Boot 自动支持 SPRING_DATASOURCE_PASSWORD 等形式）。
+server:
+  port: 8081
+
+spring:
+  application:
+    name: split-buddy
+  datasource:
+    # 本地 MySQL；allowPublicKeyRetrieval 是 MySQL8 caching_sha2 密码插件在开发环境的常见要求
+    url: jdbc:mysql://localhost:3306/split_buddy?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    # 密码走环境变量，本地未配置时用占位（本地开发请设置 SPRING_DATASOURCE_PASSWORD）
+    password: ${SPRING_DATASOURCE_PASSWORD:changeme}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      # 无密码本地默认；有则放开
+      # password:
+  sql:
+    init:
+      # 启动时执行 schema.sql 建表（IF NOT EXISTS 幂等，安全）。
+      # 仅开发期开启；正式做法是 Flyway，这里为保持单体轻量先用脚本
+      mode: always
+      schema-locations: classpath:schema.sql
+
+mybatis-plus:
+  configuration:
+    # 数据库下划线列名 -> Java 驼峰属性 自动映射
+    map-underscore-to-camel-case: true
+    # 开发期把 SQL 打到日志，方便排查；生产换成 slf4j 或关掉
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 逻辑删除字段与值：对应计划书 t_expense.deleted
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 自定义业务配置：JWT。密钥生产环境必须换成长随机串并从环境变量注入
+splitbuddy:
+  jwt:
+    secret: split-buddy-dev-secret-key-must-be-at-least-32-bytes-long!!
+    # 令牌有效期：12 小时
+    expire-minutes: 720
+
+logging:
+  level:
+    com.splitbuddy: debug
